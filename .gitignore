@@ -1,0 +1,22 @@
+vendor/
+composer.lock
+.phpunit.result.cache
+.DS_Store
+
+# Composer / vendor
+# Node
+/node_modules/
+# Environment
+.env
+.env.*.local
+# Workbench runtime artifacts
+/workbench/vendor/
+/workbench/storage/
+/workbench/.phpunit.result.cache
+# IDE
+/.idea/
+/.vscode/
+# Testbench / test artifacts
+vendor/orchestra/testbench-core/laravel/storage/
+# OS
+Thumbs.db

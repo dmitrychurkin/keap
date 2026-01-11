@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\AccessToken\Contracts;
 
 use DmitryChurkin\Keap\Contracts\Entity;

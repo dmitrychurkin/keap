@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\AccessToken;
 
-use DmitryChurkin\Keap\Contracts\Entity;
 use DmitryChurkin\Keap\Transport\Http\HttpClient;
-use DmitryChurkin\Keap\AccessToken\{Contracts, Exceptions};
 
 final class AccessTokenManager implements Contracts\AccessTokenManager
 {
@@ -20,17 +20,9 @@ final class AccessTokenManager implements Contracts\AccessTokenManager
         return $this->accessToken;
     }
 
-    public function setAccessToken(string|Entity $data): Contracts\AccessToken
+    public function setAccessToken(Contracts\AccessToken $accessToken): void
     {
-        $accessToken = AccessTokenEntity::from($data);
-
-        if (!($accessToken instanceof Contracts\AccessToken)) {
-            throw new Exceptions\InvalidTokenException('Invalid access token data provided.');
-        }
-
         $this->accessToken = $accessToken;
-
-        return $accessToken;
     }
 
     public function isAccessTokenExpired(): bool
@@ -49,11 +41,11 @@ final class AccessTokenManager implements Contracts\AccessTokenManager
         $response = $this->httpClient
             ->newFormRequest()
             ->post($this->accessTokenSettings->getTokenUrl(), [
-                'client_id'     => $this->accessTokenSettings->getClientId(),
+                'client_id' => $this->accessTokenSettings->getClientId(),
                 'client_secret' => $this->accessTokenSettings->getClientSecret(),
-                'code'          => $code,
-                'grant_type'    => 'authorization_code',
-                'redirect_uri'  => $this->accessTokenSettings->getRedirectUri(),
+                'code' => $code,
+                'grant_type' => 'authorization_code',
+                'redirect_uri' => $this->accessTokenSettings->getRedirectUrl(),
             ]);
 
         return $this->setTokenFromResponse($response);
@@ -64,10 +56,10 @@ final class AccessTokenManager implements Contracts\AccessTokenManager
         $response = $this->httpClient
             ->newFormRequest()
             ->withHeaders([
-                'Authorization' => 'Basic ' . base64_encode($this->accessTokenSettings->getClientId() . ':' . $this->accessTokenSettings->getClientSecret())
+                'Authorization' => 'Basic '.base64_encode($this->accessTokenSettings->getClientId().':'.$this->accessTokenSettings->getClientSecret()),
             ])
             ->post($this->accessTokenSettings->getTokenUrl(), [
-                'grant_type'    => 'refresh_token',
+                'grant_type' => 'refresh_token',
                 'refresh_token' => $this->getAccessToken()->getRefreshToken(),
             ]);
 
@@ -77,17 +69,17 @@ final class AccessTokenManager implements Contracts\AccessTokenManager
     public function getAuthorizationUrl(?string $state = null): string
     {
         $params = [
-            'client_id'     => $this->accessTokenSettings->getClientId(),
-            'redirect_uri'  => $this->accessTokenSettings->getRedirectUri(),
+            'client_id' => $this->accessTokenSettings->getClientId(),
+            'redirect_uri' => $this->accessTokenSettings->getRedirectUrl(),
             'response_type' => 'code',
-            'scope'         => 'full',
+            'scope' => 'full',
         ];
 
         if ($state) {
-            $params['state'] = (string)$state;
+            $params['state'] = (string) $state;
         }
 
-        return $this->accessTokenSettings->getAuthorizeUrl() . '?' . http_build_query($params);
+        return $this->accessTokenSettings->getAuthorizeUrl().'?'.http_build_query($params);
     }
 
     private function setTokenFromResponse($response): Contracts\AccessToken

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap;
 
 final class HeaderSelector extends \Keap\Core\V2\HeaderSelector
@@ -12,7 +14,7 @@ final class HeaderSelector extends \Keap\Core\V2\HeaderSelector
     {
         $headers = parent::selectHeaders($accept, $contentType, $isMultipart);
 
-        $headers['Authorization'] = 'Bearer ' . $this->accessToken;
+        $headers['Authorization'] = 'Bearer '.$this->accessToken;
 
         return $headers;
     }

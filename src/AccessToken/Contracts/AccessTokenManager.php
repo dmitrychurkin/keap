@@ -1,8 +1,8 @@
 <?php
 
-namespace DmitryChurkin\Keap\AccessToken\Contracts;
+declare(strict_types=1);
 
-use DmitryChurkin\Keap\Contracts\Entity;
+namespace DmitryChurkin\Keap\AccessToken\Contracts;
 
 interface AccessTokenManager
 {
@@ -16,5 +16,5 @@ interface AccessTokenManager
 
     public function getAccessToken(): AccessToken;
 
-    public function setAccessToken(string|Entity $data): AccessToken;
+    public function setAccessToken(AccessToken $accessToken): void;
 }

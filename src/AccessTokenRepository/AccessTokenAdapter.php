@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\AccessTokenRepository;
 
 use DmitryChurkin\Keap\Contracts\Entity;
-use DmitryChurkin\Keap\AccessTokenRepository\Contracts;
 
-class AccessTokenAdapter implements Contracts\AccessTokenAdapter
+final class AccessTokenAdapter implements Contracts\AccessTokenAdapter
 {
-    public static function makeWithEntity(string $accessTokenEntityClass): self
+    public static function makeWithEntity(string $accessTokenEntityClass): Contracts\AccessTokenAdapter
     {
         return new self(
             accessTokenEntityClass: $accessTokenEntityClass,
@@ -20,14 +21,14 @@ class AccessTokenAdapter implements Contracts\AccessTokenAdapter
 
     public function toEntity(Contracts\AccessTokenModel $model): Entity
     {
-        return $this->accessTokenEntityClass::from($model->getAccessToken())
+        return (new $this->accessTokenEntityClass(unserialize($model->getAccessToken())))
             ->setId($model->getId());
     }
 
     public function fromEntity(Entity $entity): array
     {
         return [
-            'connection' => $entity->toString()
+            'connection' => serialize($entity),
         ];
     }
 }

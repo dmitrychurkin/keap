@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\Tests\Feature;
 
-use Orchestra\Testbench\TestCase;
+use DmitryChurkin\Keap\KeapServiceProvider;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use Orchestra\Testbench\TestCase;
 use Workbench\App\Models\InfusionsoftAccount;
-use DmitryChurkin\Keap\KeapServiceProvider;
 
 class InfusionsoftAccountTest extends TestCase
 {
@@ -41,7 +43,7 @@ class InfusionsoftAccountTest extends TestCase
         // }
 
         // Fallback: create the table if migrations aren't present
-        if (!Schema::hasTable('infusionsoft_accounts')) {
+        if (! Schema::hasTable('infusionsoft_accounts')) {
             Schema::create('infusionsoft_accounts', function (Blueprint $table) {
                 $table->id();
                 $table->string('label');

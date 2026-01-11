@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\AccessTokenRepository;
-use DmitryChurkin\Keap\AccessTokenRepository\Contracts;
 
 final class AccessTokenModel implements Contracts\AccessTokenModel
 {

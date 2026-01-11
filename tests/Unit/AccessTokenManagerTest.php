@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
-use Illuminate\Support\Facades\Http;
-use DmitryChurkin\Keap\AccessToken\AccessTokenManager;
 use DmitryChurkin\Keap\AccessToken\AccessTokenEntity;
+use DmitryChurkin\Keap\AccessToken\AccessTokenManager;
 use DmitryChurkin\Keap\AccessToken\AccessTokenSettings;
 use DmitryChurkin\Keap\Transport\Http\Client as HttpClient;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
+use PHPUnit\Framework\TestCase;
 
 final class AccessTokenManagerTest extends TestCase
 {
@@ -26,12 +28,12 @@ final class AccessTokenManagerTest extends TestCase
         $accessTokenSettings = new AccessTokenSettings(
             clientId: 'client-id-123',
             clientSecret: 'client-secret-xyz',
-            redirectUri: 'https://example.com/redirect'
+            redirectUrl: 'https://example.com/redirect'
         );
 
         $manager = new AccessTokenManager(
             accessTokenSettings: $accessTokenSettings,
-            httpClient: new HttpClient()
+            httpClient: new HttpClient
         );
 
         // Act

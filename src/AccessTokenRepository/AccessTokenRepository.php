@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\AccessTokenRepository;
 
 use DmitryChurkin\Keap\Contracts\Entity;
-use DmitryChurkin\Keap\AccessTokenRepository\{Contracts, Exceptions};
 use Illuminate\Support\Facades\DB;
 
 final class AccessTokenRepository implements Contracts\AccessTokenRepository
 {
-    public static function makeWithAdapter(Contracts\AccessTokenAdapter $accessTokenAdapter): self
+    public static function makeWithAdapter(Contracts\AccessTokenAdapter $accessTokenAdapter): Contracts\AccessTokenRepository
     {
         return new self($accessTokenAdapter);
     }
@@ -23,7 +24,7 @@ final class AccessTokenRepository implements Contracts\AccessTokenRepository
             ->latest()
             ->first();
 
-        if (!$databaseRecord) {
+        if (! $databaseRecord) {
             throw new Exceptions\TokenModelNotFoundException('Access token model not found.');
         }
 

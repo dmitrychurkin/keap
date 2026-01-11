@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap;
 
-use DmitryChurkin\Keap\AccessToken\Contracts\{AccessToken, AccessTokenManager};
+use DmitryChurkin\Keap\AccessToken\Contracts\AccessToken;
+use DmitryChurkin\Keap\AccessToken\Contracts\AccessTokenManager;
 use DmitryChurkin\Keap\AccessTokenRepository\Contracts\AccessTokenRepository;
-use DmitryChurkin\Keap\Contracts;
 use Keap\Core\V2\Api\ContactApi;
 use Keap\Core\V2\Configuration;
 
@@ -24,24 +26,24 @@ final class Keap implements Contracts\Keap
         return $this->tokenManager->getAccessToken();
     }
 
-    public function getAuthorizationUrl(): string
+    public function getAuthorizationUrl(?string $state = null): string
     {
-        return $this->tokenManager->getAuthorizationUrl();
+        return $this->tokenManager->getAuthorizationUrl($state);
     }
 
     public function refreshAccessToken(): AccessToken
     {
-        $accessToken = $this->tokenManager->setAccessToken(
+        $this->tokenManager->setAccessToken(
             $this->tokenRepository->getAccessToken()
         );
 
-        if ($accessToken->isExpired()) {
+        if ($this->tokenManager->isAccessTokenExpired()) {
             $accessToken = $this->tokenManager->refreshAccessToken();
 
             $this->tokenRepository->saveAccessToken($accessToken);
         }
 
-        return $accessToken;
+        return $this->tokenManager->getAccessToken();
     }
 
     public function contacts(): ContactApi
@@ -55,7 +57,7 @@ final class Keap implements Contracts\Keap
             ->getAccessToken();
 
         return new $apiServiceClass(
-            config: (new Configuration())->setAccessToken($accessToken),
+            config: (new Configuration)->setAccessToken($accessToken),
             selector: new HeaderSelector($accessToken),
         );
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\Contracts;
 
 use DmitryChurkin\Keap\AccessToken\Contracts\AccessToken;
@@ -9,7 +11,7 @@ interface Keap
 {
     public function updateAccessToken(AuthorizationPayload $authorizationPayload): AccessToken;
 
-    public function getAuthorizationUrl(): string;
+    public function getAuthorizationUrl(?string $state = null): string;
 
     public function refreshAccessToken(): AccessToken;
 

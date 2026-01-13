@@ -7,11 +7,12 @@ namespace DmitryChurkin\Keap;
 use DmitryChurkin\Keap\AccessToken\Contracts\AccessToken;
 use DmitryChurkin\Keap\AccessToken\Contracts\AccessTokenManager;
 use DmitryChurkin\Keap\AccessTokenRepository\Contracts\AccessTokenRepository;
-use Keap\Core\V2\Api\ContactApi;
-use Keap\Core\V2\Configuration;
+use DmitryChurkin\Keap\ApiServices\WithApiServices;
 
 final class Keap implements Contracts\Keap
 {
+    use WithApiServices;
+
     public function __construct(
         private readonly AccessTokenManager $tokenManager,
         private readonly AccessTokenRepository $tokenRepository
@@ -46,19 +47,9 @@ final class Keap implements Contracts\Keap
         return $this->tokenManager->getAccessToken();
     }
 
-    public function contacts(): ContactApi
+    public function getAccessToken(): string
     {
-        return $this->makeRequest(ContactApi::class);
-    }
-
-    private function makeRequest(string $apiServiceClass)
-    {
-        $accessToken = $this->refreshAccessToken()
+        return $this->refreshAccessToken()
             ->getAccessToken();
-
-        return new $apiServiceClass(
-            config: (new Configuration)->setAccessToken($accessToken),
-            selector: new HeaderSelector($accessToken),
-        );
     }
 }

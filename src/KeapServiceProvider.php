@@ -7,7 +7,7 @@ namespace DmitryChurkin\Keap;
 use DmitryChurkin\Keap\AccessToken\AccessTokenEntity;
 use DmitryChurkin\Keap\AccessToken\AccessTokenManager;
 use DmitryChurkin\Keap\AccessToken\AccessTokenSettings;
-use DmitryChurkin\Keap\AccessTokenRepository\AccessTokenAdapter;
+use DmitryChurkin\Keap\AccessTokenRepository\AccessTokenRepositoryBuilder;
 use DmitryChurkin\Keap\Contracts\Keap as KeapContract;
 use DmitryChurkin\Keap\Transport\Http\Client as HttpClient;
 use Illuminate\Contracts\Foundation\Application;
@@ -29,7 +29,6 @@ final class KeapServiceProvider extends ServiceProvider
 
         $this->app->singleton(KeapContract::class, function (Application $app) {
             $config = $app->make('config');
-            $accessTokenRepository = $config->get('keap.access_token_repository');
 
             return new Keap(
                 tokenManager: new AccessTokenManager(
@@ -40,9 +39,9 @@ final class KeapServiceProvider extends ServiceProvider
                     ),
                     httpClient: new HttpClient,
                 ),
-                tokenRepository: $accessTokenRepository::makeWithAdapter(
-                    AccessTokenAdapter::makeWithEntity(AccessTokenEntity::class)
-                ),
+                tokenRepository: AccessTokenRepositoryBuilder::from($config->get('keap.access_token_repository'))
+                    ->withEntity(AccessTokenEntity::class)
+                    ->build(),
             );
         });
     }

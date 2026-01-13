@@ -19,10 +19,10 @@ final class AccessTokenAdapter implements Contracts\AccessTokenAdapter
         private readonly string $accessTokenEntityClass,
     ) {}
 
-    public function toEntity(Contracts\AccessTokenModel $model): Entity
+    public function toEntity(object $databaseRecord): Entity
     {
-        return (new $this->accessTokenEntityClass(unserialize($model->getAccessToken())))
-            ->setId($model->getId());
+        return (new $this->accessTokenEntityClass(unserialize($databaseRecord->connection)))
+            ->setId($databaseRecord->id);
     }
 
     public function fromEntity(Entity $entity): array

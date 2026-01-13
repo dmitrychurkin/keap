@@ -8,7 +8,7 @@ use DmitryChurkin\Keap\Contracts\Entity;
 
 interface AccessTokenAdapter
 {
-    public function toEntity(AccessTokenModel $model): Entity;
+    public function toEntity(object $databaseRecord): Entity;
 
     public function fromEntity(Entity $entity): array;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DmitryChurkin\Keap;
+namespace DmitryChurkin\Keap\ApiServices;
 
 final class HeaderSelector extends \Keap\Core\V2\HeaderSelector
 {

@@ -28,9 +28,7 @@ final class AccessTokenRepository implements Contracts\AccessTokenRepository
             throw new Exceptions\TokenModelNotFoundException('Access token model not found.');
         }
 
-        $accessTokenModel = new AccessTokenModel($databaseRecord);
-
-        return $this->accessTokenAdapter->toEntity($accessTokenModel);
+        return $this->accessTokenAdapter->toEntity($databaseRecord);
     }
 
     public function saveAccessToken(Entity $tokenEntity): int

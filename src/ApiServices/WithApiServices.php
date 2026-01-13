@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\ApiServices;
 
 use Keap\Core\V2\Configuration;

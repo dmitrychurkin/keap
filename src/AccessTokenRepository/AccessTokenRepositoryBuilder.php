@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DmitryChurkin\Keap\AccessTokenRepository;
 
 final class AccessTokenRepositoryBuilder
 {
     /**
-     * @param class-string<Contracts\AccessTokenRepository> $accessTokenRepositoryClass
+     * @param  class-string<Contracts\AccessTokenRepository>  $accessTokenRepositoryClass
      */
     public static function from(string $accessTokenRepositoryClass): self
     {
@@ -22,9 +24,7 @@ final class AccessTokenRepositoryBuilder
     ) {}
 
     /**
-     *  @param class-string<DmitryChurkin\Keap\Contracts\Entity> $accessTokenEntityClass
-     *
-     * @return self
+     * @param  class-string<DmitryChurkin\Keap\Contracts\Entity>  $accessTokenEntityClass
      */
     public function withEntity(string $accessTokenEntityClass): self
     {

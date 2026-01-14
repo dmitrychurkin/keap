@@ -33,7 +33,7 @@ final class AccessTokenManagerTest extends TestCase
 
         $manager = new AccessTokenManager(
             accessTokenSettings: $accessTokenSettings,
-            httpClient: new HttpClient
+            httpClient: app()->make(HttpClient::class)
         );
 
         // Act

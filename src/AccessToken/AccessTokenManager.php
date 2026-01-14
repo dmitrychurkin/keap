@@ -39,7 +39,7 @@ final class AccessTokenManager implements Contracts\AccessTokenManager
     public function requestAccessToken(string $code): Contracts\AccessToken
     {
         $response = $this->httpClient
-            ->newFormRequest()
+            ->asForm()
             ->post($this->accessTokenSettings->getTokenUrl(), [
                 'client_id' => $this->accessTokenSettings->getClientId(),
                 'client_secret' => $this->accessTokenSettings->getClientSecret(),
@@ -54,7 +54,7 @@ final class AccessTokenManager implements Contracts\AccessTokenManager
     public function refreshAccessToken(): Contracts\AccessToken
     {
         $response = $this->httpClient
-            ->newFormRequest()
+            ->asForm()
             ->withHeaders([
                 'Authorization' => 'Basic '.base64_encode($this->accessTokenSettings->getClientId().':'.$this->accessTokenSettings->getClientSecret()),
             ])

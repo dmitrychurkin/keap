@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace DmitryChurkin\Keap\Transport\Http;
 
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Factory;
+use Illuminate\Http\Client\PendingRequest;
 
 final class Client implements HttpClient
 {
-    public function newJsonRequest()
+    public function __construct(
+        private readonly Factory $http,
+    ) {}
+
+    public function acceptJson(): PendingRequest
     {
-        return Http::acceptJson();
+        return $this->http->acceptJson();
     }
 
-    public function newFormRequest()
+    public function asForm(): PendingRequest
     {
-        return Http::asForm();
+        return $this->http->asForm();
     }
 }

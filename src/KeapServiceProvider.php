@@ -37,7 +37,7 @@ final class KeapServiceProvider extends ServiceProvider
                         clientSecret: $config->get('keap.client_secret'),
                         redirectUrl: $config->get('keap.redirect_url'),
                     ),
-                    httpClient: new HttpClient,
+                    httpClient: $app->make(HttpClient::class),
                 ),
                 tokenRepository: AccessTokenRepositoryBuilder::from($config->get('keap.access_token_repository'))
                     ->withEntity(AccessTokenEntity::class)
